@@ -1,11 +1,14 @@
 import httpx
+import os
+from dotenv import load_dotenv
 from fastapi import APIRouter
 
 
 router = APIRouter()
 
 
-CATALOG_SERVICE = "http://catalog"
+load_dotenv()
+CATALOG_SERVICE = os.getenv("CATALOG_SERVICE")
 
 
 @router.get("/catalog")
