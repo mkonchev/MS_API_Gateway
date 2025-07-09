@@ -10,9 +10,9 @@ USER_SERVICE = "http://users"
 
 @router.post("/users/register")
 async def register(
-                email: str,
-                username: str,
-                password: str,
+    email: str,
+    username: str,
+    password: str,
 ):
     async with httpx.AsyncClient(follow_redirects=True) as client:
         responce = await client.post(
@@ -21,5 +21,20 @@ async def register(
                   "username": username,
                   "password": password,
                   "active": True}
+        )
+    return responce.json()
+
+
+@router.post("/users/login")
+async def login(
+    email: str,
+    password: str
+):
+    async with httpx.AsyncClient(follow_redirects=True) as client:
+        responce = await client.post(
+            f"{USER_SERVICE}/users/login/",
+            json={"email": email,
+                  "password": password
+                  }
         )
     return responce.json()
