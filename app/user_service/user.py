@@ -30,16 +30,25 @@ async def register(
     return response.json()
 
 
-@router.post("/users/login")
+@router.post("/login")
 async def login(
     email: str,
     password: str
 ):
     async with httpx.AsyncClient(follow_redirects=True) as client:
-        responce = await client.post(
+        response = await client.post(
             f"{USER_SERVICE}/users/login/",
             json={"email": email,
                   "password": password
                   }
         )
-    return responce.json()
+    return response.json()
+
+
+@router.get("/me")
+async def get_info(
+    token: str
+):
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"{USER_SERVICE}/users/me?token={token}")
+    return response.json()
