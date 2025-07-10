@@ -4,14 +4,14 @@ from dotenv import load_dotenv
 from fastapi import APIRouter
 
 
-router = APIRouter()
+router = APIRouter(prefix="/users", tags=["Users"])
 
 
 load_dotenv()
 USER_SERVICE = os.getenv("USER_SERVICE")
 
 
-@router.post("/users/register")
+@router.post("/register")
 async def register(
     email: str,
     username: str,
