@@ -1,18 +1,21 @@
 import httpx
+import os
 from fastapi import APIRouter
-
+from dotenv import load_dotenv
+from app.order_service.schemas.order import Order
 
 router = APIRouter()
 
 
-ORDER_SERVICE = "http://order"
+load_dotenv()
+ORDER_SERVICE = os.getenv("ORDER_SERVICE")
 
 
 @router.post("/order/create")
-async def craete_order(product_id: int, quantity: int):
+async def create_order(order: Order):
     async with httpx.AsyncClient() as client:
-        responce = await client.post(
+        response = await client.post(
             f"{ORDER_SERVICE}/orders/",
-            json={"product_id": product_id, "quantity": quantity}
+            json=order.model_dump()
         )
-    return responce.json()
+    return response.json()
